@@ -1,5 +1,5 @@
 #lang racket
-
+;PLAYING W GIT
 (define nil '())
 
 
