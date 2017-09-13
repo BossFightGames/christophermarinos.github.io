@@ -1,5 +1,5 @@
 #lang racket
-;PLAYING W GIT
+
 (define nil '())
 
 
@@ -98,4 +98,4 @@
 ;define (rowswap rowa rowb)
 
 
-;and then the serious shit like solve and whatnot
+
