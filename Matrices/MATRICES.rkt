@@ -60,7 +60,7 @@
   (if (= dim iter) nil (cons (makerowrand dim 0) (randrows dim (+ iter 1)))))
 
 (define (scalerow row scalar)
-  (if (null? row) nil (cons (* scalar (car row)) (scalerow (cdr row) scalar))))
+  (if (pair? row)  (cons (* scalar (car row)) (scalerow (cdr row) scalar)) nil))
 
 (define (makematident dim)
   (consrows dim 0))
@@ -94,6 +94,26 @@
 ;(define (extractelem mat i j)
 ; (extractnthcolumn (extractnthrow mat i) j))
 
+
+(define (colswap mat rowa rowb)
+  (transpose(matmul (makeswapelem (sizerow (transpose mat) 0) rowa rowb)  (transpose mat))))
+
+(define (rowswap mat rowa rowb)
+  (matmul (makeswapelem (sizerow mat 0) rowa rowb) mat))
+
+(define (directcopy mat iter);flexing my car cdr muscle as my lisp recursions are a wee rusty (no pun intended lol)
+  (if (pair? mat)  (cons (car mat) (directcopy (cdr mat))) nil)
+  )
+
+(define (scalematrow mat row scalar iter)
+  (if (pair? mat) (if (= row iter) (cons (scalerow row scalar) (scalematrow (cdr mat) row scalar (+ iter 1) )) (cons (car mat) (scalematrow (cdr mat) row scalar (+ iter 1) ) )) nil)
+  );this is presently broken
+
+
+;define (scalerow row scalar)
+;define (rowop rowa scalar rowb)
+
+  
 (define testmat2x2 '((1 2) (3 4)));det is -2
 (define testmat3x3 '((1 2 3) (4 5 6) (7 8 9)))
 (define testmat4x3 '((1 2 3 4) (5 6 7 8) (9 10 11 12)))
@@ -106,14 +126,8 @@
 
 
 
-;define (scalerow row scalar)
-;define (rowop rowa scalar rowb)
 
-(define (colswap mat rowa rowb)
-  (transpose(matmul (makeswapelem (sizerow (transpose mat) 0) rowa rowb)  (transpose mat))))
 
-(define (rowswap mat rowa rowb)
-  (matmul (makeswapelem (sizerow mat 0) rowa rowb) mat))
 
 
 
