@@ -86,10 +86,10 @@
     (else (   cons (makerowident dim iter 0) (xmakeswapelem dim swapa swapb  (+ iter 1) )))
     )
   
-  );the above doesnt work let's try to if into the cond
+  )
 
 ;(define (listelemat l n)
-;DO LATER LOL  
+
 
 ;(define (extractelem mat i j)
 ; (extractnthcolumn (extractnthrow mat i) j))
