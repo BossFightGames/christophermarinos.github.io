@@ -6,17 +6,19 @@
 (define (elemat list n iter)
   (if (= n iter) (car list) (elemat (cdr list) n (+ iter 1))))
 
-(define (sizecol list iter)
+(define (sizecol list iter);column operations are so bastardly i am thinking eat the cost once via transpose and then work with rows
   (cond
     ((null? list) iter)
     (else (sizecol (cdr list) (+ iter 1))))
   )
 
+;(define (sizerow mata)
+;  (
 
 (define (sizerow list iter)
   (cond
     ((null? list) iter)
-    (else (sizerow (cdr list) (+ iter 1)))))
+    (else (sizerow (cdr list) (+ iter 1)))));ph33r mah parens
 
 (define (mat2x2det mat2x2)
      (- (* (caar mat2x2) (cadadr mat2x2)) (* (cadar mat2x2) (caadr mat2x2))))
@@ -27,7 +29,7 @@
 (define (xmulrow list matb iter)
   (if (= iter (sizerow (car matb) 0)) nil (cons (dotprod list (extractnthcolumn matb iter)) (xmulrow list matb (+ iter 1)))))
 
-(define (matmul mata matb);being naughty and letting improperly sized matrices self-correct and by self correct i mean crash the program. This is Scheme.
+(define (matmul mata matb);being naughty and letting improperly sized matrices self-correct
   (if (null? mata) nil (cons (xmulrow (car mata) matb 0) (matmul (cdr mata) matb))))
 
 (define (extractfirstcolumn a)
@@ -74,20 +76,6 @@
 (define (xtranspose mata iter)
 (if (= (sizerow (car mata) 0) iter ) nil (cons (extractnthcolumn mata iter) (xtranspose mata (+ iter 1)))))
 
-(define (makeswapelem dim swapa swapb);swapa swapb in range of [0,dim] obviously plz
-(xmakeswapelem dim swapa swapb 0))
-
-(define (xmakeswapelem dim swapa swapb iter)
-
-
-(cond ((= dim iter) nil)
-    ((= iter swapa)     (cons (makerowident dim swapb 0) (xmakeswapelem dim  swapa swapb (+ iter 1) ))     )
-    ((= iter swapb)      (cons (makerowident dim swapa 0) (xmakeswapelem dim swapa swapb (+ iter 1) ))  )
-    (else (   cons (makerowident dim iter 0) (xmakeswapelem dim swapa swapb  (+ iter 1) )))
-    )
-  
-  );the above doesnt work let's try to if into the cond
-
 ;(define (listelemat l n)
 ;DO LATER LOL  
 
@@ -101,20 +89,13 @@
 (define testmat3x2 '((1 2 3) (4 5 6)))
 (define testmat3x1 '((1 2 3)))
 (define testmat1x3 '((1) (2) (3)))
-(define testmat4x4flip '((1 0 0 0)(0 0 1 0)(0 1 0 0)(0 0 0 1)))
-(define testmat3x3flip '((1 0 0)(0 0 1)(0 1 0)))
+
 
 
 
 ;define (scalerow row scalar)
 ;define (rowop rowa scalar rowb)
-
-(define (colswap mat rowa rowb)
-  (transpose(matmul (makeswapelem (sizerow (transpose mat) 0) rowa rowb)  (transpose mat))))
-
-(define (rowswap mat rowa rowb)
-  (matmul (makeswapelem (sizerow mat 0) rowa rowb) mat))
-
+;define (rowswap rowa rowb)
 
 
 
