@@ -127,9 +127,16 @@
       nil
   ))
 
-(define (form-submatrix mat row col);given an mxm matrix returns an (- m 1)x(- m 1) matrix split along the given row and column
-  (+ 1 1);this is my standard insert-code-later placeholder in scheme to avoid empty body errors
-  )
+(define (form-submatrix mat row col iter);given an mxn matrix returns an (- m 1)x(- n 1) matrix split along the given row and column
+  (if (pair? mat) (if (= row iter) (form-submatrix (cdr mat) row col (+ iter 1))
+     (cons (delfromvec (car mat) col 0) (form-submatrix (cdr mat) row col (+ iter 1)) ))
+  nil)
+)
+
+(define (delfromvec vec ind iter)
+            (if (pair? vec) (if (= ind iter) (delfromvec (cdr vec) ind (+ iter 1))
+             (cons (car vec) (delfromvec (cdr vec) ind (+ iter 1)) ))  nil)
+            )
 
 (define testmat2x2 '((1 2) (3 4)));det is -2
 (define testmat3x3 '((1 2 3) (4 5 6) (7 8 9)))
