@@ -2,7 +2,6 @@
 
 (define nil '())
 
-
 (define (elemat list n iter)
   (if (= n iter) (car list) (elemat (cdr list) n (+ iter 1))))
 
@@ -11,7 +10,6 @@
     ((null? list) iter)
     (else (sizecol (cdr list) (+ iter 1))))
   )
-
 
 (define (sizerow list iter)
   (cond
@@ -41,7 +39,7 @@
 (define (extractnthrow a n)
   (xextractnthrow a n 0))
 
-(define (xextractnthrow a n iter);should be ith row for extra linear algebra authenticity
+(define (xextractnthrow a n iter);should be ith row for extra linear algebra authenticity also i need to be consistent w my append-x-iter-hiding methods
   (if (null? a) nil (if (= iter n) (car a) (xextractnthrow (cdr a) n (+ iter 1))))
    
   )
@@ -106,14 +104,33 @@
   )
 
 (define (scalematrow mat row scalar iter)
-  (if (pair? mat) (if (= row iter) (cons (scalerow row scalar) (scalematrow (cdr mat) row scalar (+ iter 1) )) (cons (car mat) (scalematrow (cdr mat) row scalar (+ iter 1) ) )) nil)
-  );this is presently broken
+  ;algorithm: if row = iter (scalerow with scalar) (scalerow with 1)
+  (if (pair? mat)
+  (if (= iter row) (cons (scalerow (car mat) scalar) (scalematrow (cdr mat) row scalar (+ iter 1)))
+      (cons (scalerow (car mat) 1) (scalematrow (cdr mat) row scalar (+ iter 1))));identity element to the rescue
+  nil
+  )
+  )
 
+(define (matelemat mat i j iter)
+  (if (= j iter) (elemat (car mat) i 0) (matelemat (cdr mat) i j (+ iter 1)))
+  )
 
-;define (scalerow row scalar)
-;define (rowop rowa scalar rowb)
+(define (addvecs veca vecb)
+  (if (pair? veca)  (cons (+ (car veca) (car vecb)) (addvecs (cdr veca) (cdr vecb))) nil)
+  )
 
-  
+(define (addrows mat rowa rowb iter);this will work in conjunction with scalerow to allow matrix solutions. order matters: row a adds to row b. we also as it is currently written need rowa to be an ACTUAL ROW not an indice ie call it as (extractnthrow mat 1 0)
+  (if (pair? mat)
+      (if (= iter rowb) (cons (addvecs (car mat) rowa) (addrows (cdr mat) rowa rowb (+ iter 1)))
+          (cons (car mat) (addrows (cdr mat) rowa rowb (+ iter 1))))
+      nil
+  ))
+
+(define (form-submatrix mat row col);given an mxm matrix returns an (- m 1)x(- m 1) matrix split along the given row and column
+  (+ 1 1);this is my standard insert-code-later placeholder in scheme to avoid empty body errors
+  )
+
 (define testmat2x2 '((1 2) (3 4)));det is -2
 (define testmat3x3 '((1 2 3) (4 5 6) (7 8 9)))
 (define testmat4x3 '((1 2 3 4) (5 6 7 8) (9 10 11 12)))
@@ -123,12 +140,3 @@
 (define testmat1x3 '((1) (2) (3)))
 (define testmat4x4flip '((1 0 0 0)(0 0 1 0)(0 1 0 0)(0 0 0 1)))
 (define testmat3x3flip '((1 0 0)(0 0 1)(0 1 0)))
-
-
-
-
-
-
-
-
-
