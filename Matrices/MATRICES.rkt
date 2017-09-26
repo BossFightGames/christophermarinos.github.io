@@ -17,7 +17,7 @@
     (else (sizerow (cdr list) (+ iter 1)))))
 
 (define (mat2x2det mat2x2)
-     (- (* (caar mat2x2) (cadadr mat2x2)) (* (cadar mat2x2) (caadr mat2x2))))
+     (- (* (caar mat2x2) (cadadr mat2x2)) (* (cadar mat2x2) (caadr mat2x2))));no longer needed once determinant rolls out
 
 (define (dotprod a b)
   (if (and (null? a) (null? b)) 0 (+(* (car a) (car b)) (dotprod (cdr a) (cdr b)))));this allows an n length dotprod. it may be better to provide a 0 element which in case of addition is 0
@@ -30,7 +30,7 @@
 
 (define (extractfirstcolumn a)
  (if (null? a) nil (cons (caar a) (extractfirstcolumn (cdr a))))
-  )
+  );was to test before extractnthcolumn
 
 (define (extractnthcolumn a n);should b jth column
   (if (null? a) nil (cons (elemat (car a) n 0) (extractnthcolumn (cdr a) n)))
@@ -49,7 +49,7 @@
   ) 
 
 (define (makerowrand dim iter)
-  (if (= dim iter) nil (cons (random 9) (makerowrand dim (+ iter 1)))))
+  (if (= dim iter) nil (cons (random 9) (makerowrand dim (+ iter 1)))));uses a magic number but this is to test things so i guess it is ok
 
 (define (consrows dim iter)
   (if (= dim iter) nil (cons (makerowident dim iter 0) (consrows dim (+ iter 1)))))
@@ -84,7 +84,7 @@
     (else (   cons (makerowident dim iter 0) (xmakeswapelem dim swapa swapb  (+ iter 1) )))
     )
   
-  )
+  );makes an MxM swap matrice which when multiplied by a MxN matrice will swap the rows designated by swapa and swapb (refer to a linear algebra text as what is going on here is more than I can stick onto the end of a line of code)
 
 ;(define (listelemat l n)
 
@@ -137,6 +137,25 @@
             (if (pair? vec) (if (= ind iter) (delfromvec (cdr vec) ind (+ iter 1))
              (cons (car vec) (delfromvec (cdr vec) ind (+ iter 1)) ))  nil)
             )
+
+
+(define (xdeterminant mat row coliter additive-identity mult-identity reflector)
+  (if (pair? mat);obviously fix
+  (+;add?? i had this done correctly before and deleted it
+   (xdeterminant (form-submatrix mat 0 0 0) row coliter)
+   (if ()
+   additive-identity;which is going to be 0 unless you are into some odd stuff)
+   )
+  ;else
+  mat;fix: extract mat value
+  )
+  )
+
+
+
+;(define (determinant mat)
+;  (xdeterminant mat 0 0 0 1 1))
+  
 
 (define testmat2x2 '((1 2) (3 4)));det is -2
 (define testmat3x3 '((1 2 3) (4 5 6) (7 8 9)))
