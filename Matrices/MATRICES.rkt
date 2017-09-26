@@ -139,17 +139,17 @@
             )
 
 
-(define (xdeterminant mat row coliter additive-identity mult-identity reflector)
-  (if (pair? mat);obviously fix
-  (+;add?? i had this done correctly before and deleted it
-   (xdeterminant (form-submatrix mat 0 0 0) row coliter)
-   (if ()
-   additive-identity;which is going to be 0 unless you are into some odd stuff)
-   )
+;(define (xdeterminant mat row coliter additive-identity mult-identity reflector)
+;  (if (pair? mat);obviously fix
+;  (+;add?? i had this done correctly before and deleted it
+;   (xdeterminant (form-submatrix mat 0 0 0) row coliter)
+;   (if ()
+;   additive-identity;which is going to be 0 unless you are into some odd stuff)
+;   )
   ;else
-  mat;fix: extract mat value
-  )
-  )
+;  mat;fix: extract mat value
+;  )
+;  )
 
 
 
