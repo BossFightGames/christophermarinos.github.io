@@ -139,22 +139,33 @@
             )
 
 
-;(define (xdeterminant mat row coliter additive-identity mult-identity reflector)
-;  (if (pair? mat);obviously fix
-;  (+;add?? i had this done correctly before and deleted it
-;   (xdeterminant (form-submatrix mat 0 0 0) row coliter)
-;   (if ()
+(define (xdeterminant mat row coliter additive-identity mult-identity reflector)
+  (if (= (sizerow (extractnthrow mat 0) 0) 1)
+;then:
+  (car (extractnthrow mat 0));this extracts the single value from '((n)) which is what a fully
+;rendered down submatrix looks like. I wish it would have just spat out a numerical value but whatever
+;else
+  (+;add?? i had this done correctly before and deleted it because i didn't realize my pair func was wrong
+   (* (*(* reflector -1) (xdeterminant (form-submatrix mat 0 coliter 0) row coliter additive-identity mult-identity (* reflector -1)))
+      (elemat (extractnthrow mat 0 ) coliter 0))
+   (if (= coliter (sizerow mat 0));if there is nowhere to go off the side of the matrix
+      ;then
+      additive-identity
+    (* (* (* reflector -1) (xdeterminant (form-submatrix mat 0 (+ coliter 1) 0) row (+ coliter 1) additive-identity mult-identity (* reflector -1)
+      
+      )
 ;   additive-identity;which is going to be 0 unless you are into some odd stuff)
-;   )
-  ;else
-;  mat;fix: extract mat value
-;  )
-;  )
+   )))
+   );close +
+   );close if
+  )
 
 
 
-;(define (determinant mat)
-;  (xdeterminant mat 0 0 0 1 1))
+
+
+(define (determinant mat)
+  (xdeterminant mat 0 0 0 1 1))
   
 
 (define testmat2x2 '((1 2) (3 4)));det is -2
