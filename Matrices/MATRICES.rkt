@@ -146,16 +146,13 @@
 ;rendered down submatrix looks like. I wish it would have just spat out a numerical value but whatever
 ;else
   (+;add?? i had this done correctly before and deleted it because i didn't realize my pair func was wrong
-   (* (*(* reflector -1) (xdeterminant (form-submatrix mat 0 coliter 0) row coliter additive-identity mult-identity (* reflector -1)))
-      (elemat (extractnthrow mat 0 ) coliter 0))
-   (if (= coliter (sizerow mat 0));if there is nowhere to go off the side of the matrix
-      ;then
-      additive-identity
-    (* (* (* reflector -1) (xdeterminant (form-submatrix mat 0 (+ coliter 1) 0) row (+ coliter 1) additive-identity mult-identity (* reflector -1)
-      
-      )
-;   additive-identity;which is going to be 0 unless you are into some odd stuff)
-   )))
+   ;it is a dotproduct along the top row w a sign flip. let's do it sans sign flip first
+   (if (= coliter (sizerow (extractnthrow mat 0) 0))
+       additive-identity
+       (* (elemat (extractnthrow mat 0) 0 0) (xdeterminant (form-submatrix mat 0 coliter 0) 0 0 0  1 (* reflector -1)))
+       
+       );close are we out of rows if
+   (xdeterminant mat row (+ coliter 1) 0 0 (* reflector -1))
    );close +
    );close if
   )
@@ -166,7 +163,12 @@
 
 (define (determinant mat)
   (xdeterminant mat 0 0 0 1 1))
-  
+
+
+
+;(define (dotprod a b)
+;  (if (and (null? a) (null? b)) 0 (+(* (car a) (car b)) (dotprod (cdr a) (cdr b)))));this allows an n length dotprod. it may be better to provide a 0 element which in case of addition is 0
+
 
 (define testmat2x2 '((1 2) (3 4)));det is -2
 (define testmat3x3 '((1 2 3) (4 5 6) (7 8 9)))
