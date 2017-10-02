@@ -139,30 +139,22 @@
             )
 
 
-(define (xdeterminant mat row coliter additive-identity mult-identity reflector)
-  (if (= (sizerow (extractnthrow mat 0) 0) 1)
-;then:
-  (car (extractnthrow mat 0));this extracts the single value from '((n)) which is what a fully
-;rendered down submatrix looks like. I wish it would have just spat out a numerical value but whatever
-;else
-  (+;add?? i had this done correctly before and deleted it because i didn't realize my pair func was wrong
-   ;it is a dotproduct along the top row w a sign flip. let's do it sans sign flip first
-   (if (= coliter (sizerow (extractnthrow mat 0) 0))
-       additive-identity
-       (* (elemat (extractnthrow mat 0) 0 0) (xdeterminant (form-submatrix mat 0 coliter 0) 0 0 0  1 (* reflector -1)))
-       
-       );close are we out of rows if
-   (xdeterminant mat row (+ coliter 1) 0 0 (* reflector -1))
-   );close +
-   );close if
-  )
+(define (xdeterminant mat rowblock colblock)
+ (if (= (sizerow (extractnthrow mat 0) 0) 1)
+     0;additive identity
+     (+
+      (elemat (extractnthrow mat colblock) 0 0)
+      (if (= colblock (- (sizerow mat 0) 1))
+          0
+      (xdeterminant mat rowblock (+ colblock 1))))
+     
+      );close *
+     );close +
+     
 
-
-
-
-
+  
 (define (determinant mat)
-  (xdeterminant mat 0 0 0 1 1))
+ (xdeterminant mat 0 0 0 1 1 0))
 
 
 
