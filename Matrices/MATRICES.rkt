@@ -139,17 +139,19 @@
             )
 
 
-(define (xdeterminant mat rowblock colblock)
+(define (xdeterminant mat rowblock colblock reflector)
  (if (= (sizerow (extractnthrow mat 0) 0) 1)
-     0;additive identity
-     (+
-      (elemat (extractnthrow mat colblock) 0 0)
+     (elemat (extractnthrow mat 0) 0 0);base case: return the value of the 1x1 matrice
+     (+;else giant recursive dot product time
+      (* reflector (*(elemat (extractnthrow mat colblock) 0 0) (xdeterminant (form-submatrix mat 0 0 0) 0 0 -1)))
       (if (= colblock (- (sizerow mat 0) 1))
           0
-      (xdeterminant mat rowblock (+ colblock 1))))
+      (xdeterminant mat rowblock (+ colblock 1) (* reflector -1))
+      );close inner if
+      );close +
      
-      );close *
-     );close +
+      );close outer if
+     )
      
 
   
